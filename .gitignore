@@ -1,1 +1,3 @@
 .idea
+.vagrant
+master/ansible/testslave.retry
