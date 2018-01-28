@@ -1,7 +1,7 @@
 # ansible-playground
 a vagrant environment with a master and a slave vm for debugging ansible playbooks for debian
 
-0### about
+### about
 This project is a basically setup for develop ansible roles for your production servers. When you go along with the conventions it should be easy to transfer the roles to your real live production server environment. For personal environments you can handle your test- or production environment directly out of this setup. It can be a rapid start to your ansible handling. For checking the compatibility to newer debian version you have to call "vagrant destroy", then "vagrant box upgrade" and after a "vagrant up" is all ready for checking on this version.
 
 ### what do you need
