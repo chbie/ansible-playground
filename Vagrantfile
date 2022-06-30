@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
   # testslave
   config.vm.define "testslave" do |testslave|
     testslave.vm.box = "ansible-playground-testslave"
-    testslave.vm.box = "debian/stretch64"
+    testslave.vm.box = "debian/bullseye64"
     testslave.ssh.forward_agent = true
     testslave.vm.hostname = "testslave.yourdomain"
     testslave.vm.network "private_network", ip: "192.168.56.142"
@@ -30,7 +30,7 @@ Vagrant.configure("2") do |config|
   # master
   config.vm.define "master" do |master|
     master.vm.box = "ansible-playground-master"
-    master.vm.box = "debian/stretch64"
+    master.vm.box = "debian/bullseye64"
     master.ssh.forward_agent = true
     master.vm.hostname = "master.yourdomain"
     master.vm.network "private_network", ip: "192.168.56.143"
