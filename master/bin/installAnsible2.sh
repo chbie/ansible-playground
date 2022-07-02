@@ -2,7 +2,7 @@
 
 if [ ! -f "/usr/bin/ansible" ];
 then
-    sudo apt-get install -y build-essential libssl-dev libffi-dev python-dev python-pip
+    sudo apt-get install -y build-essential libssl-dev libffi-dev python-dev python3-pip
     sudo pip install ansible --upgrade
     if [ ! -e "/usr/bin/ansible" ];
     then
