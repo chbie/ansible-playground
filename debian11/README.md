@@ -1,23 +1,20 @@
-# ansible-playground
-a vagrant environment with a master and a slave vm for debugging ansible playbooks for debian
-
-### about
-This project is a basically setup for develop ansible roles for your production servers. When you go along with the conventions it should be easy to transfer the roles to your real live production server environment. For personal environments you can handle your test- or production environment directly out of this setup. It can be a rapid start to your ansible handling. For checking the compatibility to newer debian version you have to call "vagrant destroy", then "vagrant box upgrade" and after a "vagrant up" is all ready for checking on this version.
-
-### what do you need
-The project needs a valid virtualbox and vagrant environment. In vagrant it needs additional nfs plugin in vagrant. I recommend the usage of the vbguest plugin. So you can shure for valid guest additions in your vms. When you do not want this, change your Vagrantfile. Thats all. You do not have to install ansible directly in your normal system.
-https://www.vagrantup.com/docs/synced-folders/nfs.html  
-https://github.com/dotless-de/vagrant-vbguest  
+# debian11
+Vagrant environment with master and slave VMs to debug ansible playbooks for Debian "Bullseye".
+This project aims to be a basic setup to develop ansible roles for stage and production servers.
 
 
-### getting started
+### Prerequisites
+The project needs a valid VirtualBox and Vagrant environment, with the [vbguest plugin for Vagrant](https://github.com/dotless-de/vagrant-vbguest) installed.
+Since [synced folders](https://www.vagrantup.com/docs/synced-folders/nfs.html) are handled via NFS on your local machine, NFS server and client functionality need to be active and running as well.
+
+Ansible will be installed on the "master" VM, so having it installed locally on your host machine is optional.
+
+
+### Getting started
   
-- customize ip and hostname in the Vagrantfile
-- call "vagrant up" in the project folder
-- call "vagrant ssh master"
-- in console of vm call the command "/home/vagrant/runAnsible.sh"
-- extend it with your roles
-- check the success in a additional console per "vagrant ssh testslave"
-- for transition to production servers you can use the environment.yml file
-
-Have Fun ! Sorry for non correct english. It was late on day. I want to read it soon again for corrections.
+1. Customize IPs and hostnames in the Vagrantfile
+2. ```vagrant up``` in the project folder
+3. ```vagrant ssh master``` to connect to the master VM
+4. ```/home/vagrant/runAnsible.sh``` to install Ansible
+5. Extend it with your roles
+6. Check the success in a different terminal window via ```vagrant ssh testslave```
