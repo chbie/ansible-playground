@@ -20,22 +20,22 @@ fi
 printf "$YELLOW Installing certificates in node ...\n"
 # CREATING .SSH FOLDER, IF REQUIRED
 if [ ! -d "/home/vagrant/.ssh" ]; then
-    printf "$YELLOW Creating directory ~/.ssh ...\n"
-    mkdir -p /home/vagrant/.ssh;
-    chmod -r 0700 /home/vagrant/.ssh
+  printf "$YELLOW Creating directory ~/.ssh ...\n"
+  mkdir -p /home/vagrant/.ssh;
+  chmod -r 0700 /home/vagrant/.ssh
 fi
 # SAME FOR ROOT
 if sudo [ ! -d "/root/.ssh" ]; then
-    printf "$YELLOW Creating directory /root/.ssh ...\n"
-    sudo mkdir -p /root/.ssh;
-    sudo chmod 0700 /root/.ssh
+  printf "$YELLOW Creating directory /root/.ssh ...\n"
+  sudo mkdir -p /root/.ssh;
+  sudo chmod 0700 /root/.ssh
 fi
 
 # IMPORTING KEYFILE AND ADDING TO KNOWN HOSTS
 if sudo [ ! -f "/root/.ssh/authorized_keys" ]; then
-    printf "$YELLOW Creating known hosts file ...\n"
-    sudo touch /root/.ssh/authorized_keys
-    sudo chmod 0777 /root/.ssh/authorized_keys
-    sudo cat "$CERTPATH" | sudo tee /root/.ssh/authorized_keys
-    sudo chmod 0644 /root/.ssh/authorized_keys
+  printf "$YELLOW Creating known hosts file ...\n"
+  sudo touch /root/.ssh/authorized_keys
+  sudo chmod 0777 /root/.ssh/authorized_keys
+  sudo cat "$CERTPATH" | sudo tee /root/.ssh/authorized_keys
+  sudo chmod 0644 /root/.ssh/authorized_keys
 fi

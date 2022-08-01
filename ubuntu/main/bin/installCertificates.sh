@@ -20,15 +20,15 @@ fi
 printf "$YELLOW Installing certificates in main ...\n"
 # CREATING .SSH FOLDER, IF REQUIRED
 if [ ! -d "/home/vagrant/.ssh" ]; then
-    printf "$YELLOW Creating directory ~/.ssh ...\n"
-    mkdir -p /home/vagrant/.ssh;
-    chmod -r 0700 /home/vagrant/.ssh
+  printf "$YELLOW Creating directory ~/.ssh ...\n"
+  mkdir -p /home/vagrant/.ssh;
+  chmod -r 0700 /home/vagrant/.ssh
 fi
 
 # IMPORTING KEYFILE, IF REQUIRED
 if [ ! -f "/home/vagrant/.ssh/id_rsa" ]; then
-    printf "$YELLOW Importing key file ,,,\n"
-    cp "$CERTPATH" /home/vagrant/.ssh/id_rsa;
-    chown vagrant:vagrant /home/vagrant/.ssh/id_rsa;
-    chmod 0600 /home/vagrant/.ssh/id_rsa;
+  printf "$YELLOW Importing key file ,,,\n"
+  cp "$CERTPATH" /home/vagrant/.ssh/id_rsa;
+  chown vagrant:vagrant /home/vagrant/.ssh/id_rsa;
+  chmod 0600 /home/vagrant/.ssh/id_rsa;
 fi
