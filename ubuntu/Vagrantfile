@@ -1,0 +1,69 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+ENV["LC_ALL"] = "en_US.UTF-8"
+
+# CHANGE IP AND HOSTNAMES, IF NEEDED
+boxes = [
+    {
+        :name => "main",
+        :cpus => "2",
+        :memory => "2048",
+        :address => "192.168.56.10"
+    },
+    {
+        :name => "leonardo",
+        :cpus => "1",
+        :memory => "2048",
+        :address => "192.168.56.11"
+    },
+    {
+        :name => "raphael",
+        :cpus => "1",
+        :memory => "2048",
+        :address => "192.168.56.12"
+    },
+    {
+        :name => "donatello",
+        :cpus => "1",
+        :memory => "2048",
+        :address => "192.168.56.13"
+    },
+    {
+        :name => "michelangelo",
+        :cpus => "1",
+        :memory => "2048",
+        :address => "192.168.56.14"
+    }
+]
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # GLOBAL OPTIONS
+  config.vm.box = "ubuntu/jammy64"
+  config.ssh.forward_agent = true
+  # INDIVIDUAL BOX SETUP
+  boxes.each do |vars|
+    config.vm.define vars[:name] do |machine|
+      # SET HOSTNAME
+      machine.vm.hostname = vars[:name]
+      # SET VIRTUALBOX OPTIONS
+      machine.vm.provider :virtualbox do |vb|
+        vb.customize ["modifyvm", :id, "--memory", vars[:memory]]
+        vb.customize ["modifyvm", :id, "--cpus", vars[:cpus]]
+        vb.customize ["modifyvm", :id, "--ioapic", "on"]
+        vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+      end
+      # SET NETWORK
+      machine.vm.network :private_network, ip: vars[:address]
+      # SET SHARED FOLDERS
+      if machine.vm.hostname == 'main'
+        machine.vm.synced_folder "./main", "/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false, create: true
+      else
+        machine.vm.synced_folder "./node", "/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false, create: true
+      end
+      # SHELL / ANSIBLE PROVISIONING
+      # machine.vm.provision "shell", path: "./path/to/script.sh"
+    end
+  end
+end
