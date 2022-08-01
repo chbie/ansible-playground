@@ -56,14 +56,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
       # SET NETWORK
       machine.vm.network :private_network, ip: vars[:address]
-      # SET SHARED FOLDERS
+      # SHARED FOLDERS AND PROVISIONING
       if machine.vm.hostname == 'main'
         machine.vm.synced_folder "./main", "/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false, create: true
+        machine.vm.provision "shell", path: "./main/bin/installCertificates.sh"
       else
         machine.vm.synced_folder "./node", "/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false, create: true
+        machine.vm.provision "shell", path: "./node/bin/installCertificates.sh"
       end
-      # SHELL / ANSIBLE PROVISIONING
-      # machine.vm.provision "shell", path: "./path/to/script.sh"
     end
   end
 end
