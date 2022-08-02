@@ -1,6 +1,6 @@
-# debian11
-Vagrant environment with master and slave VMs to debug ansible playbooks for Debian "Bullseye".
-This project aims to be a basic setup to develop ansible roles for stage and production servers.
+# bauhaus
+Vagrant environments with VMs to debug ansible playbooks.
+This project aims to be a basic setup to develop ansible roles for stage and production servers as well as personal setups.
 
 
 ### Prerequisites
@@ -14,7 +14,7 @@ Ansible will be installed on the "master" VM, so having it installed locally on 
   
 1. Customize IPs and hostnames in the Vagrantfile
 2. ```vagrant up``` in the project folder
-3. ```vagrant ssh master``` to connect to the master VM
+3. ```vagrant ssh master``` or ```vagrant ssh main``` to connect to the Ansible worker VM
 4. ```/home/vagrant/runAnsible.sh``` to install Ansible
 5. Extend it with your roles
-6. Check the success in a different terminal window via ```vagrant ssh testslave```
+6. Check the success in a different terminal window via ```vagrant ssh $NODE```
