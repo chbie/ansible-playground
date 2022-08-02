@@ -2,7 +2,7 @@
 SCRPATH=$(readlink -f $0)   # .../node/bin/installCertificates.sh
 CURDIR=$(dirname $SCRPATH)  # .../node/bin
 BASDIR=$(dirname $CURDIR)   # .../node
-CERTPATH=$(readlink -f $BASDIR"/certificates/bauhaus.pub")
+CERTPATH=$(readlink -f $BASDIR"/certificates/id_rsa.pub")
 
 RED="\033[0;31m\033[1m!! FAILED =>\033[m"
 YELLOW="\033[1;33m\033[1m:: TASK =>\033[m"
@@ -11,8 +11,8 @@ GREEN="\033[0;32m\033[1m✓✓ SUCCESS =>\033[m"
 # VALIDATING CERTPATH
 if [ -z "$CERTPATH" ]; then
   printf "$RED Certificates folder moved or missing!\n"
-  printf "$RED Trying via synced folder ...\n"
-  CERTPATH="/vagrant/certificates/bauhaus.pub"
+  printf "$YELLOW Trying via synced folder ...\n"
+  CERTPATH="/vagrant/certificates/id_rsa.pub"
 else
   printf "$GREEN Certificates folder found, continuing ...\n"
 fi
@@ -31,11 +31,17 @@ if sudo [ ! -d "/root/.ssh" ]; then
   sudo chmod 0700 /root/.ssh
 fi
 
-# IMPORTING KEYFILE AND ADDING TO KNOWN HOSTS
+# CREATING AUTHORIZED KEYS FILE, IF REQUIRED
 if sudo [ ! -f "/root/.ssh/authorized_keys" ]; then
-  printf "$YELLOW Creating known hosts file ...\n"
+  printf "$YELLOW Creating authorized_keys file ...\n"
   sudo touch /root/.ssh/authorized_keys
   sudo chmod 0777 /root/.ssh/authorized_keys
-  sudo cat "$CERTPATH" | sudo tee /root/.ssh/authorized_keys
-  sudo chmod 0644 /root/.ssh/authorized_keys
 fi
+
+# COPYING SSH PUBKEY TO AUTHORIZED KEYS
+printf "$YELLOW Registering main public key in node ...\n"
+sudo cat "$CERTPATH" | sudo tee /root/.ssh/authorized_keys
+sudo cat "$CERTPATH" | sudo tee /home/vagrant/.ssh/authorized_keys
+sudo chmod 0644 /root/.ssh/authorized_keys
+
+exit 0;
