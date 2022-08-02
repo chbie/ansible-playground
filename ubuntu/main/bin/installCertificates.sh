@@ -1,4 +1,5 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
+
 SCRPATH=$(readlink -f $0)   # .../main/bin/installCertificates.sh
 CURDIR=$(dirname $SCRPATH)  # .../main/bin
 BASDIR=$(dirname $CURDIR)   # .../main

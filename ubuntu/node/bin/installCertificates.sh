@@ -1,4 +1,5 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
+
 SCRPATH=$(readlink -f $0)   # .../node/bin/installCertificates.sh
 CURDIR=$(dirname $SCRPATH)  # .../node/bin
 BASDIR=$(dirname $CURDIR)   # .../node
