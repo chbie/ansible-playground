@@ -63,6 +63,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       else
         machine.vm.synced_folder "./node", "/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false, create: true
         machine.vm.provision "shell", path: "./node/bin/installCertificates.sh"
+        machine.vm.provision "shell", path: "./node/bin/installPackages.sh"
       end
     end
   end
