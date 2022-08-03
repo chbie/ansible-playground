@@ -1,0 +1,69 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+ENV["LC_ALL"] = "en_US.UTF-8"
+
+# CHANGE IP AND HOSTNAMES, IF NEEDED
+boxes = [
+    {
+        :name => "main",
+        :cpus => "2",
+        :memory => "2048",
+        :address => "192.168.56.50"
+    },
+    {
+        :name => "balboa",
+        :cpus => "1",
+        :memory => "2048",
+        :address => "192.168.56.51"
+    },
+    {
+        :name => "creed",
+        :cpus => "1",
+        :memory => "2048",
+        :address => "192.168.56.52"
+    },
+    {
+        :name => "clang",
+        :cpus => "1",
+        :memory => "2048",
+        :address => "192.168.56.53"
+    },
+    {
+        :name => "drago",
+        :cpus => "1",
+        :memory => "2048",
+        :address => "192.168.56.54"
+    }
+]
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # GLOBAL OPTIONS
+  config.vm.box = "generic/rocky8"
+  config.ssh.forward_agent = true
+  # INDIVIDUAL BOX SETUP
+  boxes.each do |vars|
+    config.vm.define vars[:name] do |machine|
+      # SET HOSTNAME
+      machine.vm.hostname = vars[:name]
+      # SET VIRTUALBOX OPTIONS
+      machine.vm.provider :virtualbox do |vb|
+        vb.customize ["modifyvm", :id, "--memory", vars[:memory]]
+        vb.customize ["modifyvm", :id, "--cpus", vars[:cpus]]
+        vb.customize ["modifyvm", :id, "--ioapic", "on"]
+        vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+      end
+      # SET NETWORK
+      machine.vm.network :private_network, ip: vars[:address]
+      # SHARED FOLDERS AND PROVISIONING
+      if machine.vm.hostname == 'main'
+        machine.vm.synced_folder "./main", "/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false, create: true
+        machine.vm.provision "shell", path: "./main/bin/installCertificates.sh"
+      else
+        machine.vm.synced_folder "./node", "/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false, create: true
+        machine.vm.provision "shell", path: "./node/bin/installCertificates.sh"
+      end
+    end
+  end
+end
