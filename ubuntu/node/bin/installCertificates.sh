@@ -41,8 +41,8 @@ fi
 
 # COPYING SSH PUBKEY TO AUTHORIZED KEYS
 printf "$YELLOW Importing public key ...\n"
-sudo cat "$CERTPATH" | sudo tee /root/.ssh/authorized_keys
-sudo cat "$CERTPATH" | sudo tee /home/vagrant/.ssh/authorized_keys
+sudo cat "$CERTPATH" | sudo tee -a /root/.ssh/authorized_keys
+sudo cat "$CERTPATH" | sudo tee -a /home/vagrant/.ssh/authorized_keys
 sudo chmod 0644 /root/.ssh/authorized_keys
 
 exit 0;
