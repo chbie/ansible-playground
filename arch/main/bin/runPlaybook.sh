@@ -1,2 +1,5 @@
 #!/usr/bin/env bash
-cd /vagrant/ansible && ansible-playbook -i hosts.yml playbook.yml
+cd /vagrant/ansible || return
+if [[ "$(pwd)" =~ "/vagrant/ansible" ]]; then
+  ansible-playbook -i hosts.yml playbook.yml
+fi
