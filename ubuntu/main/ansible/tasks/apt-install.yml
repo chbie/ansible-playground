@@ -1,0 +1,26 @@
+---
+- name: Install additional packages
+  apt:
+    name:
+      - build-essential
+      - libssl-dev
+      - libffi-dev
+      - apt-transport-https
+      - curl
+      - python3
+      - python3-pip
+      - golang-go
+      - ansible
+      - git
+      - dialog
+      - htop
+      - nano
+      - neovim
+      - netcat-openbsd
+      - nmap
+      - glances
+      - zsh
+      - zsh-syntax-highlighting
+      - nodejs
+      - npm
+    state: present
