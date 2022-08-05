@@ -9,38 +9,20 @@ ENV["LC_ALL"] = "en_US.UTF-8"
 boxes = [
     {
         :name => "main",
-        :cpus => "2",
-        :memory => "2048",
-        :address => "192.168.56.200"
+        :cpus => "4",
+        :memory => "4096",
+        :address => "192.168.56.20"
     },
     {
-        :name => "balboa",
-        :cpus => "1",
-        :memory => "2048",
-        :address => "192.168.56.201"
-    },
-    {
-        :name => "creed",
-        :cpus => "1",
-        :memory => "2048",
-        :address => "192.168.56.202"
-    },
-    {
-        :name => "clang",
-        :cpus => "1",
-        :memory => "2048",
-        :address => "192.168.56.203"
-    },
-    {
-        :name => "drago",
-        :cpus => "1",
-        :memory => "2048",
-        :address => "192.168.56.204"
+        :name => "node",
+        :cpus => "4",
+        :memory => "4096",
+        :address => "192.168.56.21"
     }
 ]
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "generic/rocky8"
+  config.vm.box = "generic/arch"
   config.ssh.forward_agent = true
   boxes.each do |vars|
     config.vm.define vars[:name] do |machine|
@@ -55,6 +37,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       if machine.vm.hostname == 'main'
         machine.vm.synced_folder "./main", "/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false, create: true
         machine.vm.provision "shell", path: "./main/bin/installCertificates.sh"
+        machine.vm.provision "shell", path: "./main/bin/installPackages.sh"
       else
         machine.vm.synced_folder "./node", "/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false, create: true
         machine.vm.provision "shell", path: "./node/bin/installCertificates.sh"

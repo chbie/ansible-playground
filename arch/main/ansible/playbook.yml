@@ -1,0 +1,26 @@
+---
+- hosts: nodes
+  collections:
+    - community.general.pacman
+    - kewlfft.aur
+
+  tasks:
+    - name: Configure basic system
+      become: true
+      import_tasks: tasks/pacman.yml
+
+    - name: Setup AUR builder
+      become: true
+      import_tasks: tasks/aur_builder.yml
+
+    - name: Configure AUR packages
+      become: true
+      become_user: aur_builder
+      import_tasks: tasks/yay.yml
+
+    - name: Cleanup
+      become: true
+      ansible.builtin.user:
+        name: aur_builder
+        state: absent
+        remove: yes

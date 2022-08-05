@@ -1,8 +1,8 @@
 ---
 # this playbook loads the example role common
 
-- name: apply basically tools
-  hosts: testslaves
+- name: Apply Basic Tools
+  hosts: nodes
   remote_user: root
   roles:
     - common
