@@ -55,6 +55,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       if machine.vm.hostname == 'main'
         machine.vm.synced_folder "./main", "/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false, create: true
         machine.vm.provision "shell", path: "./main/bin/installCertificates.sh"
+        machine.vm.provision "shell", path: "./main/bin/installPackages.sh"
       else
         machine.vm.synced_folder "./node", "/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false, create: true
         machine.vm.provision "shell", path: "./node/bin/installCertificates.sh"
