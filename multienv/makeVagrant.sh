@@ -1,3 +1,13 @@
+#!/usr/bin/bash
+
+[[ ! -e Vagrantfile ]] && touch Vagrantfile
+
+ARCH="generic/arch"
+DEBIAN="debian/bullseye64"
+ROCKY="generic/rocky8"
+UBUNTU="ubuntu/jammy64"
+
+cat > Vagrantfile << EOF
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -12,35 +22,35 @@ boxes = [
         :cpus => "2",
         :memory => "2048",
         :address => "192.168.56.10",
-        :distribution => "ubuntu/jammy64"
+        :distribution => "$UBUNTU"
     },
     {
         :name => "faceman",
         :cpus => "1",
         :memory => "2048",
         :address => "192.168.56.11",
-        :distribution => "debian/bullseye64"
+        :distribution => "$DEBIAN"
     },
     {
         :name => "howlin-mad",
         :cpus => "1",
         :memory => "2048",
         :address => "192.168.56.12",
-        :distribution => "generic/rocky8"
+        :distribution => "$ROCKY"
     },
     {
         :name => "baracus",
         :cpus => "1",
         :memory => "2048",
         :address => "192.168.56.13",
-        :distribution => "generic/arch"
+        :distribution => "$ARCH"
     },
     {
         :name => "hannibal",
         :cpus => "1",
         :memory => "2048",
         :address => "192.168.56.14",
-        :distribution => "ubuntu/jammy64"
+        :distribution => "$UBUNTU"
     }
 ]
 
@@ -68,3 +78,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 end
+EOF
+
+exit 0;
