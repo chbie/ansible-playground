@@ -1,13 +1,3 @@
-#!/usr/bin/bash
-
-[[ ! -e Vagrantfile ]] && touch Vagrantfile
-
-ARCH="generic/arch"
-DEBIAN="debian/bullseye64"
-ROCKY="generic/rocky8"
-UBUNTU="ubuntu/jammy64"
-
-cat > Vagrantfile << EOF
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -18,39 +8,39 @@ ENV["LC_ALL"] = "en_US.UTF-8"
 # AND CHANGE IPs & HOSTNAMES, IF NEEDED
 boxes = [
     {
-        :name => "main",
+        :name => "proxy01-local",
         :cpus => "2",
         :memory => "2048",
         :address => "192.168.56.10",
-        :distribution => "$UBUNTU"
+        :distribution => "debian/bullseye64"
     },
     {
-        :name => "faceman",
+        :name => "web01-local",
         :cpus => "1",
         :memory => "2048",
         :address => "192.168.56.11",
-        :distribution => "$DEBIAN"
+        :distribution => "debian/bullseye64"
     },
     {
-        :name => "howlin-mad",
+        :name => "db01-local",
         :cpus => "1",
         :memory => "2048",
         :address => "192.168.56.12",
-        :distribution => "$ROCKY"
+        :distribution => "debian/bullseye64"
     },
     {
-        :name => "baracus",
+        :name => "cache01-local",
         :cpus => "1",
         :memory => "2048",
         :address => "192.168.56.13",
-        :distribution => "$ARCH"
+        :distribution => "debian/bullseye64"
     },
     {
-        :name => "hannibal",
+        :name => "queue01-local",
         :cpus => "1",
         :memory => "2048",
         :address => "192.168.56.14",
-        :distribution => "$UBUNTU"
+        :distribution => "debian/bullseye64"
     }
 ]
 
@@ -59,6 +49,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.define vars[:name] do |machine|
       machine.vm.box = vars[:distribution]
       machine.ssh.forward_agent = true
+      machine.ssh.insert_key = false
       machine.vm.hostname = vars[:name]
       machine.vm.provider :virtualbox do |vb|
         vb.customize ["modifyvm", :id, "--memory", vars[:memory]]
@@ -67,17 +58,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
       end
       machine.vm.network :private_network, ip: vars[:address]
-      if machine.vm.hostname == 'main'
-        machine.vm.synced_folder "./main", "/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false, create: true
-        machine.vm.provision "shell", path: "./main/bin/installCertificates.sh"
-        machine.vm.provision "shell", path: "./main/bin/installPackages.sh"
-      else
-        machine.vm.synced_folder "./node", "/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false, create: true
-        machine.vm.provision "shell", path: "./node/bin/installCertificates.sh"
-      end
+      machine.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "/vagrant/host.pub"
+      machine.vm.provision "shell", inline: <<- SHELL
+        cat /vagrant/host.pub >> /home/vagrant/.ssh/authorized_keys"
+      SHELL
+      #machine.vm.provision "shell", path: "./bin/installPackages.sh"
     end
   end
 end
-EOF
-
-exit 0;
