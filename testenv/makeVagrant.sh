@@ -1,8 +1,4 @@
 #!/usr/bin/bash
-ARCH="generic/arch"
-DEBIAN="debian/bullseye64"
-ROCKY="generic/rocky8"
-UBUNTU="ubuntu/jammy64"
 
 [[ ! -e Vagrantfile ]] && touch Vagrantfile
 cat > Vagrantfile << EOF
@@ -57,6 +53,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.define vars[:name] do |machine|
       machine.vm.box = vars[:distribution]
       machine.ssh.forward_agent = true
+      #machine.ssh.insert_key = false
       machine.vm.hostname = vars[:name]
       machine.vm.provider :virtualbox do |vb|
         vb.customize ["modifyvm", :id, "--memory", vars[:memory]]
@@ -65,8 +62,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
       end
       machine.vm.network :private_network, ip: vars[:address]
-      #machine.vm.provision "shell", path: "./bin/installCertificates.sh"
-      #machine.vm.provision "shell", path: "./bin/installPackages.sh"
+      machine.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/host.pub"
+      machine.vm.provision "shell", path: "./installCertificates.sh"
     end
   end
 end
