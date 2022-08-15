@@ -1,0 +1,32 @@
+---
+- name: Sync database and upgrade system
+  community.general.pacman:
+    update_cache: yes
+    upgrade: yes
+
+- name: Strip unwanted packages
+  community.general.pacman:
+    name:
+      - meld
+      - ristretto
+      - firefox
+      - parole
+      - xterm
+      - gwenview
+    state: absent
+
+- name: Get packages from official repositories
+  community.general.pacman:
+    name:
+      - base-devel
+      - go
+      - python
+      - dialog
+      - htop
+      - nano
+      - nano-syntax-highlighting
+      - neovim
+      - scrot
+      - gnu-netcat
+      - nmap
+    state: present

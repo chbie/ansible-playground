@@ -1,3 +1,7 @@
+#!/usr/bin/bash
+
+[[ ! -e Vagrantfile ]] && touch Vagrantfile
+cat > Vagrantfile << EOF
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -11,36 +15,36 @@ boxes = [
         :name => "main",
         :cpus => "2",
         :memory => "2048",
-        :address => "192.168.56.200"
+        :address => "192.168.56.100"
     },
     {
-        :name => "balboa",
+        :name => "blinky",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.201"
+        :address => "192.168.56.101"
     },
     {
-        :name => "creed",
+        :name => "pinky",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.202"
+        :address => "192.168.56.102"
     },
     {
-        :name => "clang",
+        :name => "inky",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.203"
+        :address => "192.168.56.103"
     },
     {
-        :name => "drago",
+        :name => "clyde",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.204"
+        :address => "192.168.56.104"
     }
 ]
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "generic/rocky8"
+  config.vm.box = "debian/bullseye64"
   config.ssh.forward_agent = true
   boxes.each do |vars|
     config.vm.define vars[:name] do |machine|
@@ -54,13 +58,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
       machine.vm.network :private_network, ip: vars[:address]
       if machine.vm.hostname == 'main'
-        machine.vm.synced_folder "./main", "/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false, create: true
-        machine.vm.provision "shell", path: "./main/bin/installCertificates.sh"
-        machine.vm.provision "shell", path: "./main/bin/installPackages.sh"
+        machine.vm.network "forwarded_port", guest: 3306, host: 3326
+        machine.vm.synced_folder "./shared/debian", "/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false, create: true
+        machine.vm.provision "file", source: "./certificates/id_rsa", destination: "~/keyfile"
+        machine.vm.provision "shell", path: "./bin/install-certificate-main.sh"
+        machine.vm.provision "shell", path: "./bin/packages-apt-main.sh"
       else
-        machine.vm.synced_folder "./node", "/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false, create: true
-        machine.vm.provision "shell", path: "./node/bin/installCertificates.sh"
+        machine.vm.synced_folder ".", "/vagrant", disabled: true
+        machine.vm.provision "file", source: "./certificates/id_rsa.pub", destination: "~/main.pub"
+        machine.vm.provision "shell", path: "./bin/install-certificate-node.sh"
       end
     end
   end
 end
+EOF
+
+exit 0;

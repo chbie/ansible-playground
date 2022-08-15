@@ -1,0 +1,9 @@
+---
+- hosts: nodes
+  gather_facts: true
+
+  tasks:
+    - name: Print Host Info
+      debug:
+        msg: "User: {{ ansible_user }} || Host: {{ hostvars[ansible_hostname].ansible_host }}"
+...

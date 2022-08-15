@@ -46,6 +46,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.define vars[:name] do |machine|
       machine.vm.hostname = vars[:name]
       machine.vm.provider :virtualbox do |vb|
+        vb.name = vars[:name]
         vb.customize ["modifyvm", :id, "--memory", vars[:memory]]
         vb.customize ["modifyvm", :id, "--cpus", vars[:cpus]]
         vb.customize ["modifyvm", :id, "--ioapic", "on"]

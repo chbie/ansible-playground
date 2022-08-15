@@ -1,8 +1,4 @@
 #!/usr/bin/bash
-ARCH="generic/arch"
-DEBIAN="debian/bullseye64"
-ROCKY="generic/rocky8"
-UBUNTU="ubuntu/jammy64"
 
 [[ ! -e Vagrantfile ]] && touch Vagrantfile
 cat > Vagrantfile << EOF
@@ -16,49 +12,45 @@ ENV["LC_ALL"] = "en_US.UTF-8"
 # AND CHANGE IPs & HOSTNAMES, IF NEEDED
 boxes = [
     {
-        :name => "proxy01-local",
+        :name => "main",
         :cpus => "2",
         :memory => "2048",
-        :address => "192.168.56.10",
-        :distribution => "$UBUNTU"
+        :address => "192.168.56.200"
     },
     {
-        :name => "web01-local",
+        :name => "balboa",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.11",
-        :distribution => "$DEBIAN"
+        :address => "192.168.56.201"
     },
     {
-        :name => "db01-local",
+        :name => "creed",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.12",
-        :distribution => "$UBUNTU"
+        :address => "192.168.56.202"
     },
     {
-        :name => "cache01-local",
+        :name => "clang",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.13",
-        :distribution => "$DEBIAN"
+        :address => "192.168.56.203"
     },
     {
-        :name => "queue01-local",
+        :name => "drago",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.14",
-        :distribution => "$UBUNTU"
+        :address => "192.168.56.204"
     }
 ]
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "generic/rocky8"
+  config.ssh.forward_agent = true
   boxes.each do |vars|
     config.vm.define vars[:name] do |machine|
-      machine.vm.box = vars[:distribution]
-      machine.ssh.forward_agent = true
       machine.vm.hostname = vars[:name]
       machine.vm.provider :virtualbox do |vb|
+        vb.name = vars[:name]
         vb.customize ["modifyvm", :id, "--memory", vars[:memory]]
         vb.customize ["modifyvm", :id, "--cpus", vars[:cpus]]
         vb.customize ["modifyvm", :id, "--ioapic", "on"]
@@ -66,12 +58,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
       machine.vm.network :private_network, ip: vars[:address]
       if machine.vm.hostname == 'main'
-        machine.vm.synced_folder "./main", "/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false, create: true
-        machine.vm.provision "shell", path: "./main/bin/installCertificates.sh"
-        machine.vm.provision "shell", path: "./main/bin/installPackages.sh"
+        machine.vm.synced_folder "./shared/rocky", "/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false, create: true
+        machine.vm.provision "file", source: "./certificates/id_rsa", destination: "~/keyfile"
+        machine.vm.provision "shell", path: "./bin/install-certificate-main.sh"
+        machine.vm.provision "shell", path: ".bin/packages-rocky-main.sh"
       else
-        machine.vm.synced_folder "./node", "/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false, create: true
-        machine.vm.provision "shell", path: "./node/bin/installCertificates.sh"
+        machine.vm.synced_folder ".", "/vagrant", disabled: true
+        machine.vm.provision "file", source: "./certificates/id_rsa.pub", destination: "~/main.pub"
+        machine.vm.provision "shell", path: "./bin/install-certificate-node.sh"
       end
     end
   end
