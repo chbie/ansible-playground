@@ -5,3 +5,4 @@
 */.retry
 *.log
 .log
+nodes.info
