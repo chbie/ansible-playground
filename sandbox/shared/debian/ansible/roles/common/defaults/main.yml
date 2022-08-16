@@ -1,7 +1,0 @@
----
-
-# this is a example for overwriting vars in hierarchy
-# the default variables shows for a role the available vars
-# and sets the vars when they not exists in the host_vars or stuff
-
-domain_name: "common.vagrant.testservers.yourdomain.net"

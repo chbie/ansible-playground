@@ -1,8 +1,0 @@
----
-- hosts: nodes
-
-  tasks:
-    - name: Update nodes
-      dnf:
-        name: "*"
-        state: latest
