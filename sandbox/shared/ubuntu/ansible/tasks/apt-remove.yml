@@ -1,0 +1,29 @@
+---
+- name: Remove unwanted preinstalled packages
+  apt:
+    name:
+      - libreoffice
+      - libreoffice-core
+      - libreoffice-common
+      - aisleriot
+      - vlc
+      - quassel
+      - quassel-client
+      - quassel-core
+      - quassel-data
+      - trojita
+      - atril
+      - atril-commonapt search gimp
+      - gimp
+      - ristretto
+      - hexchat
+      - hexchat-common
+      - transmission
+      - parole
+      - rhythmbox
+      - gnome-sudoku
+      - gnome-mahjongg
+      - gnome-mines
+    state: absent
+    autoremove: yes
+    purge: yes

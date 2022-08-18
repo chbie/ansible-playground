@@ -1,0 +1,16 @@
+---
+- name: Install additional packages
+  apt:
+    name:
+      - build-essential
+      - libssl-dev
+      - libffi-dev
+      - apt-transport-https
+      - curl
+      - git
+      - dialog
+      - htop
+      - nano
+      - netcat-openbsd
+      - nmap
+    state: present
