@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-CERTPATH=$(readlink -f "/home/vagrant/main.pub")
+CERTPATH=$(readlink -f "/home/vagrant/ansible_ssh.pub")
 
 RED="\033[0;31m\033[1m!! FAILED =>\033[m"
 YELLOW="\033[1;33m\033[1m:: INFO =>\033[m"

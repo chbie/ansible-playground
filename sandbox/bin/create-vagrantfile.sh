@@ -28,16 +28,16 @@ ENV["LC_ALL"] = "en_US.UTF-8"
 # AND CHANGE IPs & HOSTNAMES, IF NEEDED
 boxes = [
     {
-        :name => "main",
+        :name => "calvin",
         :cpus => "4",
         :memory => "4096",
-        :address => "192.168.56.20"
+        :address => "192.168.56.11"
     },
     {
-        :name => "node",
+        :name => "hobbes",
         :cpus => "4",
         :memory => "4096",
-        :address => "192.168.56.21"
+        :address => "192.168.56.12"
     }
 ]
 
@@ -55,17 +55,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
       end
       machine.vm.network :private_network, ip: vars[:address]
-      if machine.vm.hostname == 'main'
-        machine.vm.synced_folder "./shared/arch", "/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false, create: true
-        machine.vm.provision "file", source: "./certificates/id_rsa", destination: "~/keyfile"
-        machine.vm.provision "shell", path: "./bin/install-certificate-main.sh"
-        machine.vm.provision "shell", path: "./bin/packages-arch-main.sh"
-      else
-        machine.vm.synced_folder ".", "/vagrant", disabled: true
-        machine.vm.provision "file", source: "./certificates/id_rsa.pub", destination: "~/main.pub"
-        machine.vm.provision "shell", path: "./bin/install-certificate-node.sh"
-        machine.vm.provision "shell", path: "./bin/packages-arch-node.sh"
-      end
+      machine.vm.synced_folder ".", "/vagrant", disabled: true
+      machine.vm.provision "file", source: "./certificates/ansible_ssh.pub", destination: "~/ansible_ssh.pub"
+      machine.vm.provision "shell", path: "./bin/install-certificate.sh"
+      machine.vm.provision "shell", path: "./bin/packages-pac.sh"
     end
   end
 end
@@ -86,34 +79,28 @@ ENV["LC_ALL"] = "en_US.UTF-8"
 # AND CHANGE IPs & HOSTNAMES, IF NEEDED
 boxes = [
     {
-        :name => "main",
-        :cpus => "2",
-        :memory => "2048",
-        :address => "192.168.56.100"
-    },
-    {
         :name => "blinky",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.101"
+        :address => "192.168.56.21"
     },
     {
         :name => "pinky",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.102"
+        :address => "192.168.56.22"
     },
     {
         :name => "inky",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.103"
+        :address => "192.168.56.23"
     },
     {
         :name => "clyde",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.104"
+        :address => "192.168.56.24"
     }
 ]
 
@@ -131,17 +118,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
       end
       machine.vm.network :private_network, ip: vars[:address]
-      if machine.vm.hostname == 'main'
-        machine.vm.network "forwarded_port", guest: 3306, host: 3326
-        machine.vm.synced_folder "./shared/debian", "/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false, create: true
-        machine.vm.provision "file", source: "./certificates/id_rsa", destination: "~/keyfile"
-        machine.vm.provision "shell", path: "./bin/install-certificate-main.sh"
-        machine.vm.provision "shell", path: "./bin/packages-apt-main.sh"
-      else
-        machine.vm.synced_folder ".", "/vagrant", disabled: true
-        machine.vm.provision "file", source: "./certificates/id_rsa.pub", destination: "~/main.pub"
-        machine.vm.provision "shell", path: "./bin/install-certificate-node.sh"
-      end
+      machine.vm.synced_folder ".", "/vagrant", disabled: true
+      machine.vm.provision "file", source: "./certificates/ansible_ssh.pub", destination: "~/ansible_ssh.pub"
+      machine.vm.provision "shell", path: "./bin/install-certificate.sh"
+      machine.vm.provision "shell", path: "./bin/packages-apt.sh"
     end
   end
 end
@@ -162,34 +142,28 @@ ENV["LC_ALL"] = "en_US.UTF-8"
 # AND CHANGE IPs & HOSTNAMES, IF NEEDED
 boxes = [
     {
-        :name => "main",
-        :cpus => "2",
-        :memory => "2048",
-        :address => "192.168.56.200"
-    },
-    {
         :name => "balboa",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.201"
+        :address => "192.168.56.31"
     },
     {
         :name => "creed",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.202"
+        :address => "192.168.56.32"
     },
     {
         :name => "clang",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.203"
+        :address => "192.168.56.33"
     },
     {
         :name => "drago",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.204"
+        :address => "192.168.56.34"
     }
 ]
 
@@ -207,16 +181,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
       end
       machine.vm.network :private_network, ip: vars[:address]
-      if machine.vm.hostname == 'main'
-        machine.vm.synced_folder "./shared/rocky", "/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false, create: true
-        machine.vm.provision "file", source: "./certificates/id_rsa", destination: "~/keyfile"
-        machine.vm.provision "shell", path: "./bin/install-certificate-main.sh"
-        machine.vm.provision "shell", path: ".bin/packages-rocky-main.sh"
-      else
-        machine.vm.synced_folder ".", "/vagrant", disabled: true
-        machine.vm.provision "file", source: "./certificates/id_rsa.pub", destination: "~/main.pub"
-        machine.vm.provision "shell", path: "./bin/install-certificate-node.sh"
-      end
+      machine.vm.synced_folder ".", "/vagrant", disabled: true
+      machine.vm.provision "file", source: "./certificates/ansible_ssh.pub", destination: "~/ansible_ssh.pub"
+      machine.vm.provision "shell", path: "./bin/install-certificate.sh"
+      machine.vm.provision "shell", path: "./bin/packages-dnf.sh"
     end
   end
 end
@@ -237,34 +205,28 @@ ENV["LC_ALL"] = "en_US.UTF-8"
 # AND CHANGE IPs & HOSTNAMES, IF NEEDED
 boxes = [
     {
-        :name => "main",
-        :cpus => "2",
-        :memory => "2048",
-        :address => "192.168.56.10"
-    },
-    {
         :name => "leonardo",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.11"
+        :address => "192.168.56.41"
     },
     {
         :name => "raphael",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.12"
+        :address => "192.168.56.42"
     },
     {
         :name => "donatello",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.13"
+        :address => "192.168.56.43"
     },
     {
         :name => "michelangelo",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.14"
+        :address => "192.168.56.44"
     }
 ]
 
@@ -282,16 +244,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
       end
       machine.vm.network :private_network, ip: vars[:address]
-      if machine.vm.hostname == 'main'
-        machine.vm.synced_folder "./shared/ubuntu", "/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false, create: true
-        machine.vm.provision "file", source: "./certificates/id_rsa", destination: "~/keyfile"
-        machine.vm.provision "shell", path: "./bin/install-certificate-main.sh"
-        machine.vm.provision "shell", path: "./bin/packages-apt-main.sh"
-      else
-        machine.vm.synced_folder ".", "/vagrant", disabled: true
-        machine.vm.provision "file", source: "./certificates/id_rsa.pub", destination: "~/main.pub"
-        machine.vm.provision "shell", path: "./bin/install-certificate-node.sh"
-      end
+      machine.vm.synced_folder ".", "/vagrant", disabled: true
+      machine.vm.provision "file", source: "./certificates/ansible_ssh.pub", destination: "~/ansible_ssh.pub"
+      machine.vm.provision "shell", path: "./bin/install-certificate.sh"
+      machine.vm.provision "shell", path: "./bin/packages-apt.sh"
     end
   end
 end
