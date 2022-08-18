@@ -10,19 +10,19 @@ USER_DIR = $(HOME)
 ##########################################
 .PHONY: vf-arch
 vf-arch:
-	./bin/create-vagrantfile.sh --arch
+	@./bin/create-vagrantfile.sh --arch
 
 .PHONY: vf-debian
 vf-debian:
-	./bin/create-vagrantfile.sh --debian
+	@./bin/create-vagrantfile.sh --debian
 
 .PHONY: vf-rocky
 vf-rocky:
-	./bin/create-vagrantfile.sh --rocky
+	@./bin/create-vagrantfile.sh --rocky
 
 .PHONY: vf-ubuntu
 vf-ubuntu:
-	./bin/create-vagrantfile.sh --jammy
+	@./bin/create-vagrantfile.sh --jammy
 
 ##########################################
 #
