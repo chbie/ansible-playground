@@ -84,7 +84,7 @@ vm-up:
 
 ##########################################
 #
-# INITIALIZE ENVIRONMENTS
+# INITIALIZE AND TERMINATE ENVIRONMENTS
 #
 ##########################################
 .PHONY: init-arch
@@ -98,3 +98,26 @@ init-rocky: vf-rocky vm-up
 
 .PHONY: init-jammy
 init-jammy: vf-ubuntu vm-up
+
+.PHONY: term-arch
+term-arch: vf-arch vm-destroy
+
+.PHONY: term-deb
+term-deb: vf-debian vm-destroy
+
+.PHONY: term-rocky
+term-rocky: vf-rocky vm-destroy
+
+.PHONY: term-jammy
+term-jammy: vf-ubuntu vm-destroy
+
+##########################################
+#
+# ANSIBLE COMMANDS
+#
+##########################################
+.PHONY: ans-show-nodes
+ans-play:
+	ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
+	-i ${CURR_DIR}/ansible/inventory/hosts.yml \
+	${CURR_DIR}/ansible/playbook.yml

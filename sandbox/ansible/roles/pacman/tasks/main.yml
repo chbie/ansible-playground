@@ -1,0 +1,64 @@
+---
+- name: Sync database and upgrade system
+  become: true
+  community.general.pacman:
+    update_cache: yes
+    upgrade: yes
+
+- name: Strip unwanted packages
+  become: true
+  community.general.pacman:
+    name:
+      - meld
+      - ristretto
+      - firefox
+      - parole
+      - xterm
+      - gwenview
+    state: absent
+
+- name: Get packages from official repositories
+  become: true
+  community.general.pacman:
+    name:
+      - base-devel
+      - go
+      - python
+      - dialog
+      - htop
+      - nano
+      - nano-syntax-highlighting
+      - neovim
+      - scrot
+      - gnu-netcat
+      - nmap
+    state: present
+
+- name: Create the 'aur_builder' user
+  become: true
+  ansible.builtin.user:
+    name: aur_builder
+    create_home: yes
+    group: wheel
+
+- name: Allow the 'aur_builder' to run 'sudo pacman' without a password
+  become: yes
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers.d/11-install-aur_builder
+    line: 'aur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman'
+    create: yes
+    validate: 'visudo -cf %s'
+
+- name: Install an AUR helper
+  kewlfft.aur.aur:
+    use: makepkg
+    name: yay
+    state: present
+
+- name: Cleanup
+  become: true
+  ansible.builtin.user:
+    name: aur_builder
+    state: absent
+    remove: yes
+...

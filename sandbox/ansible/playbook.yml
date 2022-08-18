@@ -3,24 +3,23 @@
   collections:
     - community.general.pacman
     - kewlfft.aur
-
   tasks:
-    - name: Configure basic system
-      become: true
-      import_tasks: tasks/pacman.yml
+    - name: Gather Custom Facts
+      include_role:
+        name: common
 
-    - name: Setup AUR builder
-      become: true
-      import_tasks: tasks/aur_builder.yml
+    - name: Arch Linux
+      include_role:
+        name: pacman
+      when: ansible_local.getprettyname.pretty_name == "Arch Linux"
 
-    - name: Configure AUR packages
-      become: true
-      become_user: aur_builder
-      import_tasks: tasks/yay.yml
+    - name: Debian & Ubuntu
+      include_role:
+        name: apt
+      when: ansible_local.getprettyname.pretty_name == "Ubuntu 22.04.1 LTS" or
+            ansible_local.getprettyname.pretty_name == "Debian GNU/Linux 11 (bullseye)"
 
-    - name: Cleanup
-      become: true
-      ansible.builtin.user:
-        name: aur_builder
-        state: absent
-        remove: yes
+    - name: Rocky Linux
+      include_role:
+        name: dnf
+      when: ansible_local.getprettyname.pretty_name == "Rocky or something"

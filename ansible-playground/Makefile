@@ -84,7 +84,7 @@ vm-up:
 
 ##########################################
 #
-# INITIALIZE ENVIRONMENTS
+# INITIALIZE AND TERMINATE ENVIRONMENTS
 #
 ##########################################
 .PHONY: init-arch
@@ -98,3 +98,15 @@ init-rocky: vf-rocky vm-up
 
 .PHONY: init-jammy
 init-jammy: vf-ubuntu vm-up
+
+.PHONY: term-arch
+term-arch: vf-arch vm-down vm-destroy
+
+.PHONY: term-deb
+term-deb: vf-debian vm-down vm-destroy
+
+.PHONY: term-rocky
+term-rocky: vf-rocky vm-down vm-destroy
+
+.PHONY: term-jammy
+term-jammy: vf-ubuntu vm-destroy vm-destroy
