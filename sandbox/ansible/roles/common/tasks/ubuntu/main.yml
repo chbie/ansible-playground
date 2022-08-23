@@ -1,0 +1,54 @@
+---
+- name: Update cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  become: true
+
+- name: Install additional packages
+  apt:
+    name:
+      - build-essential
+      - libssl-dev
+      - libffi-dev
+      - apt-transport-https
+      - curl
+      - git
+      - dialog
+      - htop
+      - nano
+      - netcat-openbsd
+      - nmap
+    state: present
+  become: true
+
+- name: Remove unwanted preinstalled packages
+  apt:
+    name:
+      - libreoffice
+      - libreoffice-core
+      - libreoffice-common
+      - aisleriot
+      - vlc
+      - quassel
+      - quassel-client
+      - quassel-core
+      - quassel-data
+      - trojita
+      - atril
+      - atril-commonapt search gimp
+      - gimp
+      - ristretto
+      - hexchat
+      - hexchat-common
+      - transmission
+      - parole
+      - rhythmbox
+      - gnome-sudoku
+      - gnome-mahjongg
+      - gnome-mines
+    state: absent
+    autoremove: yes
+    purge: yes
+  become: true
+...

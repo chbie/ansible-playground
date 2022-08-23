@@ -1,0 +1,7 @@
+---
+server:
+    distribution: "debian"
+    version: "11"
+    pretty_name: "Debian GNU/Linux 11 (bullseye)"
+    group: debian
+...

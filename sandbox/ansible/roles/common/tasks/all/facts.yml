@@ -1,0 +1,27 @@
+---
+- name: Make Facts Directory
+  file:
+    path: /home/{{ ansible_user }}/facts.d
+    recurse: yes
+    state: directory
+    owner: "{{ ansible_user }}"
+
+- name: Copy Custom Fact
+  copy:
+    src: "{{ playbook_dir }}/facts.d/getprettyname.fact"
+    dest: /home/{{ ansible_user }}/facts.d/getprettyname.fact
+    owner: "{{ ansible_user }}"
+    mode: 0755
+
+- name: Reload Facts
+  setup:
+    fact_path: /home/{{ ansible_user }}/facts.d/
+
+- name: Print Host Info
+  debug:
+    msg: "User: {{ ansible_user }} || Host: {{ hostvars[ansible_hostname].ansible_host }}"
+
+- name: Show Custom Fact
+  debug:
+    msg: "{{ ansible_local.getprettyname.pretty_name }}"
+...

@@ -1,0 +1,7 @@
+---
+server:
+    distribution: "ubuntu"
+    version: "22.04"
+    pretty_name: "Ubuntu 22.04.1 LTS"
+    group: ubuntu
+...

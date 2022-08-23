@@ -1,0 +1,7 @@
+---
+server:
+    distribution: "rocky linux"
+    version: "8.6"
+    pretty_name: "Rocky Linux 8.6 (Green Obsidian)"
+    group: rocky
+...

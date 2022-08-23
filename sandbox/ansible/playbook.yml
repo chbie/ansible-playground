@@ -7,19 +7,4 @@
     - name: Gather Custom Facts
       include_role:
         name: common
-
-    - name: Arch Linux
-      include_role:
-        name: pacman
-      when: ansible_local.getprettyname.pretty_name == "Arch Linux"
-
-    - name: Debian & Ubuntu
-      include_role:
-        name: apt
-      when: ansible_local.getprettyname.pretty_name == "Ubuntu 22.04.1 LTS" or
-            ansible_local.getprettyname.pretty_name == "Debian GNU/Linux 11 (bullseye)"
-
-    - name: Rocky Linux
-      include_role:
-        name: dnf
-      when: ansible_local.getprettyname.pretty_name == "Rocky Linux 8.6 (Green Obsidian)"
+...
