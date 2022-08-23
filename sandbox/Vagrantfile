@@ -8,21 +8,33 @@ ENV["LC_ALL"] = "en_US.UTF-8"
 # AND CHANGE IPs & HOSTNAMES, IF NEEDED
 boxes = [
     {
-        :name => "calvin",
-        :cpus => "4",
-        :memory => "4096",
-        :address => "192.168.56.11"
+        :name => "balboa",
+        :cpus => "1",
+        :memory => "2048",
+        :address => "192.168.56.31"
     },
     {
-        :name => "hobbes",
-        :cpus => "4",
-        :memory => "4096",
-        :address => "192.168.56.12"
+        :name => "creed",
+        :cpus => "1",
+        :memory => "2048",
+        :address => "192.168.56.32"
+    },
+    {
+        :name => "clang",
+        :cpus => "1",
+        :memory => "2048",
+        :address => "192.168.56.33"
+    },
+    {
+        :name => "drago",
+        :cpus => "1",
+        :memory => "2048",
+        :address => "192.168.56.34"
     }
 ]
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "generic/arch"
+  config.vm.box = "generic/rocky8"
   config.ssh.forward_agent = true
   boxes.each do |vars|
     config.vm.define vars[:name] do |machine|
@@ -38,7 +50,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       machine.vm.synced_folder ".", "/vagrant", disabled: true
       machine.vm.provision "file", source: "./certificates/ansible_ssh.pub", destination: "~/ansible_ssh.pub"
       machine.vm.provision "shell", path: "./bin/install-certificate.sh"
-      machine.vm.provision "shell", path: "./bin/packages-pac.sh"
+      machine.vm.provision "shell", path: "./bin/packages-dnf.sh"
     end
   end
 end

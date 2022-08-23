@@ -118,6 +118,8 @@ term-jammy: vf-ubuntu vm-destroy
 ##########################################
 .PHONY: ans-show-nodes
 ans-play:
-	ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
+	@ANSIBLE_DISPLAY_SKIPPED_HOSTS=false \
+	ANSIBLE_HOST_KEY_CHECKING=False \
+	ansible-playbook \
 	-i ${CURR_DIR}/ansible/inventory/hosts.yml \
 	${CURR_DIR}/ansible/playbook.yml

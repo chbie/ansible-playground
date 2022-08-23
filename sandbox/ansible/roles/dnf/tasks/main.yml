@@ -1,5 +1,6 @@
 ---
 - name: Update nodes
+  become: yes
   dnf:
     name: "*"
     state: latest

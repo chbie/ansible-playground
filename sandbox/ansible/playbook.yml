@@ -22,4 +22,4 @@
     - name: Rocky Linux
       include_role:
         name: dnf
-      when: ansible_local.getprettyname.pretty_name == "Rocky or something"
+      when: ansible_local.getprettyname.pretty_name == "Rocky Linux 8.6 (Green Obsidian)"
