@@ -109,4 +109,4 @@ term-deb: vf-debian vm-down vm-destroy
 term-rocky: vf-rocky vm-down vm-destroy
 
 .PHONY: term-jammy
-term-jammy: vf-ubuntu vm-destroy vm-destroy
+term-jammy: vf-ubuntu vm-down vm-destroy

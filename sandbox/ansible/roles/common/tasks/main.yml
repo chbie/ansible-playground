@@ -1,3 +1,4 @@
 ---
-- include_tasks: all/facts.yml
-- include_tasks: "{{ server.distribution }}/main.yml"
+- include_tasks:
+    - all/facts.yml
+    - "{{ server.distribution }}/main.yml"

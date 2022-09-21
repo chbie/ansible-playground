@@ -8,6 +8,10 @@ USER_DIR = $(HOME)
 # UTILITY OPERATIONS
 #
 ##########################################
+.PHONY: vf-alpine
+vf-alpine:
+	@./bin/create-vagrantfile.sh --alpine
+
 .PHONY: vf-arch
 vf-arch:
 	@./bin/create-vagrantfile.sh --arch
@@ -31,6 +35,7 @@ vf-ubuntu:
 ##########################################
 .PHONY: vg-box-add
 vg-box-add:
+	@vagrant box add generic/alpine316 --provider=virtualbox --force
 	@vagrant box add generic/arch --provider=virtualbox --force
 	@vagrant box add debian/bullseye64 --provider=virtualbox --force
 	@vagrant box add generic/rocky8  --provider=virtualbox --force
@@ -82,11 +87,50 @@ vm-status:
 vm-up:
 	@vagrant up
 
+.PHONY: vm-forget
+vm-forget: alpine-forget arch-forget debian-forget rocky-forget ubuntu-forget
+
+.PHONY: alpine-forget
+alpine-forget:
+	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.11"
+	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.12"
+	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.13"
+	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.14"
+
+.PHONY: arch-forget
+arch-forget:
+	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.21"
+	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.22"
+
+.PHONY: debian-forget
+debian-forget:
+	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.31"
+	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.32"
+	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.33"
+	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.34"
+
+.PHONY: rocky-forget
+rocky-forget:
+	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.41"
+	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.42"
+	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.43"
+	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.44"
+
+.PHONY: ubuntu-forget
+ubuntu-forget:
+	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.51"
+	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.52"
+	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.53"
+	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.54"
+
 ##########################################
 #
 # INITIALIZE AND TERMINATE ENVIRONMENTS
 #
 ##########################################
+.PHONY: init-alpine
+init-alpine: vf-alpine vm-up
+
 .PHONY: init-arch
 init-arch: vf-arch vm-up
 
@@ -98,6 +142,9 @@ init-rocky: vf-rocky vm-up
 
 .PHONY: init-jammy
 init-jammy: vf-ubuntu vm-up
+
+.PHONY: term-alpine
+term-alpine: vf-alpine vm-destroy
 
 .PHONY: term-arch
 term-arch: vf-arch vm-destroy
