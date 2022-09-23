@@ -1,0 +1,7 @@
+---
+server:
+    distribution: "alpine"
+    version: "3.16"
+    pretty_name: "Alpine Linux v3.16"
+    group: alpine
+...

@@ -1,4 +1,4 @@
 ---
 collections:
-  - community.general.pacman
+  - community.general
   - kewlfft.aur

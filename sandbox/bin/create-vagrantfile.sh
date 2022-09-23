@@ -72,7 +72,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       machine.vm.synced_folder ".", "/vagrant", disabled: true
       machine.vm.provision "file", source: "./certificates/ansible_ssh.pub", destination: "~/ansible_ssh.pub"
       machine.vm.provision "shell", path: "./bin/install-certificate.sh"
-      #machine.vm.provision "shell", path: "./bin/packages-apt.sh"
+      machine.vm.provision "shell", path: "./bin/packages-apk.sh"
     end
   end
 end
@@ -210,25 +210,25 @@ boxes = [
         :name => "balboa",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.41"
+        :address => "192.168.56.51"
     },
     {
         :name => "creed",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.42"
+        :address => "192.168.56.52"
     },
     {
         :name => "clang",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.43"
+        :address => "192.168.56.53"
     },
     {
         :name => "drago",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.44"
+        :address => "192.168.56.54"
     }
 ]
 
@@ -273,25 +273,25 @@ boxes = [
         :name => "leonardo",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.51"
+        :address => "192.168.56.41"
     },
     {
         :name => "raphael",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.52"
+        :address => "192.168.56.42"
     },
     {
         :name => "donatello",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.53"
+        :address => "192.168.56.43"
     },
     {
         :name => "michelangelo",
         :cpus => "1",
         :memory => "2048",
-        :address => "192.168.56.54"
+        :address => "192.168.56.44"
     }
 ]
 

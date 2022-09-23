@@ -109,15 +109,15 @@ debian-forget:
 	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.33"
 	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.34"
 
-.PHONY: rocky-forget
-rocky-forget:
+.PHONY: jammy-forget
+jammy-forget:
 	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.41"
 	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.42"
 	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.43"
 	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.44"
 
-.PHONY: ubuntu-forget
-ubuntu-forget:
+.PHONY: rocky-forget
+rocky-forget:
 	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.51"
 	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.52"
 	@ssh-keygen -f "${USER_DIR}/.ssh/known_hosts" -R "192.168.56.53"
@@ -128,35 +128,35 @@ ubuntu-forget:
 # INITIALIZE AND TERMINATE ENVIRONMENTS
 #
 ##########################################
-.PHONY: init-alpine
-init-alpine: vf-alpine vm-up
+.PHONY: alpine-init
+alpine-init: vf-alpine vm-up
 
-.PHONY: init-arch
-init-arch: vf-arch vm-up
+.PHONY: arch-init
+arch-init: vf-arch vm-up
 
-.PHONY: init-deb
-init-deb: vf-debian vm-up
+.PHONY: deb-init
+deb-init: vf-debian vm-up
 
-.PHONY: init-rocky
-init-rocky: vf-rocky vm-up
+.PHONY: jammy-init
+jammy-init: vf-ubuntu vm-up
 
-.PHONY: init-jammy
-init-jammy: vf-ubuntu vm-up
+.PHONY: rocky-init
+rocky-init: vf-rocky vm-up
 
-.PHONY: term-alpine
-term-alpine: vf-alpine vm-destroy
+.PHONY: alpine-term
+alpine-term: vf-alpine vm-destroy
 
-.PHONY: term-arch
-term-arch: vf-arch vm-destroy
+.PHONY: arch-init
+arch-init: vf-arch vm-destroy
 
-.PHONY: term-deb
-term-deb: vf-debian vm-destroy
+.PHONY: deb-init
+deb-init: vf-debian vm-destroy
 
-.PHONY: term-rocky
-term-rocky: vf-rocky vm-destroy
+.PHONY: jammy-init
+jammy-init: vf-ubuntu vm-destroy
 
-.PHONY: term-jammy
-term-jammy: vf-ubuntu vm-destroy
+.PHONY: rocky-init
+rocky-init: vf-rocky vm-destroy
 
 ##########################################
 #
@@ -164,7 +164,7 @@ term-jammy: vf-ubuntu vm-destroy
 #
 ##########################################
 .PHONY: ans-show-nodes
-ans-play:
+ans-show-nodes:
 	@ANSIBLE_DISPLAY_SKIPPED_HOSTS=false \
 	ANSIBLE_HOST_KEY_CHECKING=False \
 	ansible-playbook \
