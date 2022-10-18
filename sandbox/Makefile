@@ -88,7 +88,7 @@ vm-up:
 	@vagrant up
 
 .PHONY: vm-forget
-vm-forget: alpine-forget arch-forget debian-forget rocky-forget ubuntu-forget
+vm-forget: alpine-forget arch-forget debian-forget rocky-forget jammy-forget
 
 .PHONY: alpine-forget
 alpine-forget:
@@ -144,19 +144,19 @@ jammy-init: vf-ubuntu vm-up
 rocky-init: vf-rocky vm-up
 
 .PHONY: alpine-term
-alpine-term: vf-alpine vm-destroy
+alpine-term: vf-alpine alpine-forget vm-destroy
 
-.PHONY: arch-init
-arch-init: vf-arch vm-destroy
+.PHONY: arch-term
+arch-init: vf-arch arch-forget vm-destroy
 
-.PHONY: deb-init
-deb-init: vf-debian vm-destroy
+.PHONY: deb-term
+deb-init: vf-debian debian-forget vm-destroy
 
-.PHONY: jammy-init
-jammy-init: vf-ubuntu vm-destroy
+.PHONY: jammy-term
+jammy-init: vf-ubuntu jammy-forget vm-destroy
 
-.PHONY: rocky-init
-rocky-init: vf-rocky vm-destroy
+.PHONY: rocky-term
+rocky-init: vf-rocky rocky-forget vm-destroy
 
 ##########################################
 #
