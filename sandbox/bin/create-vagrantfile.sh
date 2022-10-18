@@ -122,6 +122,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       machine.vm.network :private_network, ip: vars[:address]
       machine.vm.synced_folder ".", "/vagrant", disabled: true
       machine.vm.provision "file", source: "./certificates/ansible_ssh.pub", destination: "~/ansible_ssh.pub"
+      machine.vm.provision "file", source: "./certificates/mirrorlist", destination: "/tmp/mirrorlist"
+      machine.vm.provision "shell", inline: "/bin/cp -rf /tmp/mirrorlist /etc/pacman.d/mirrorlist"
       machine.vm.provision "shell", path: "./bin/install-certificate.sh"
       machine.vm.provision "shell", path: "./bin/packages-pac.sh"
     end

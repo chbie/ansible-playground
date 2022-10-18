@@ -79,9 +79,17 @@ vm-down:
 vm-provision:
 	@vagrant reload --provision
 
+.PHONY: vm-resume
+vm-resume:
+	@vagrant resume
+
 .PHONY: vm-status
 vm-status:
 	@vagrant status
+
+.PHONY: vm-suspend
+vm-suspend:
+	@vagrant suspend
 
 .PHONY: vm-up
 vm-up:
@@ -147,16 +155,16 @@ rocky-init: vf-rocky vm-up
 alpine-term: vf-alpine alpine-forget vm-destroy
 
 .PHONY: arch-term
-arch-init: vf-arch arch-forget vm-destroy
+arch-term: vf-arch arch-forget vm-destroy
 
 .PHONY: deb-term
-deb-init: vf-debian debian-forget vm-destroy
+deb-term: vf-debian debian-forget vm-destroy
 
 .PHONY: jammy-term
-jammy-init: vf-ubuntu jammy-forget vm-destroy
+jammy-term: vf-ubuntu jammy-forget vm-destroy
 
 .PHONY: rocky-term
-rocky-init: vf-rocky rocky-forget vm-destroy
+rocky-term: vf-rocky rocky-forget vm-destroy
 
 ##########################################
 #
