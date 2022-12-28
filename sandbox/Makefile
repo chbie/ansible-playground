@@ -33,8 +33,8 @@ vf-ubuntu:
 # GLOBAL VAGRANT OPERATIONS
 #
 ##########################################
-.PHONY: vg-box-add
-vg-box-add:
+.PHONY: vm-box-add
+vm-box-add:
 	@vagrant box add generic/alpine316 --provider=virtualbox --force
 	@vagrant box add generic/arch --provider=virtualbox --force
 	@vagrant box add debian/bullseye64 --provider=virtualbox --force
@@ -42,23 +42,23 @@ vg-box-add:
 	@vagrant box add ubuntu/jammy64 --provider=virtualbox --force
 
 .PHONY: vm-box-check
-vg-box-check:
+vm-box-check:
 	@vagrant box outdated --force
 
 .PHONY: vm-box-list
-vg-box-list:
+vm-box-list:
 	@vagrant box list
 
 .PHONY: vm-box-nuke
-vg-box-nuke:
+vm-box-nuke:
 	@vagrant box remove * --all --force
 
 .PHONY: vm-box-health
-vg-box-status:
+vm-box-status:
 	@vagrant global-status --prune
 
 .PHONY: vm-box-update
-vg-box-update:
+vm-box-update:
 	@vagrant box update
 	@vagrant box prune --keep-active-boxes --force
 
